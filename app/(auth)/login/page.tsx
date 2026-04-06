@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { loginAction } from "@/actions/auth"
+import { getSession } from "next-auth/react"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -18,13 +19,21 @@ export default function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
+
     const res = await loginAction(form)
+
     if (res?.error) {
       toast.error(res.error)
     } else {
-      toast.success("Login successful")
-      router.refresh()
+      const session = await getSession()
+
+      if (session?.user?.role === "admin") {
+        router.push("/admin/dashboard")
+      } else {
+        router.push("/")
+      }
     }
+
     setLoading(false)
   }
 
