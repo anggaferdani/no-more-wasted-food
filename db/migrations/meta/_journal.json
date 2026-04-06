@@ -1,0 +1,69 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1775268646140,
+      "tag": "0000_colorful_wolfsbane",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775310645894,
+      "tag": "0001_strange_quasar",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1775316000106,
+      "tag": "0002_milky_princess_powerful",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1775316970411,
+      "tag": "0003_curved_mantis",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1775318715997,
+      "tag": "0004_bored_shen",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1775354245647,
+      "tag": "0005_colossal_unus",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1775365142562,
+      "tag": "0006_ambitious_satana",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1775374623633,
+      "tag": "0007_past_mordo",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1775376650560,
+      "tag": "0008_wandering_luke_cage",
+      "breakpoints": true
+    }
+  ]
+}
