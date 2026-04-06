@@ -26,7 +26,7 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
   product: one(products, { fields: [transactions.productId], references: [products.id] }),
 }))
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL! })
+const pool = new Pool({ connectionString: process.env.DATABASE_URL!, ssl: { rejectUnauthorized: false } })
 
 export const db = drizzle(pool, {
   schema: {
