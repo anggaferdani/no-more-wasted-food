@@ -19,13 +19,13 @@ export default function AppNavbar() {
   ]
 
   const userItems = [
-    { href: "/profile", label: "Profile" },
+    { href: "/profile", label: session?.user?.email || "Profile" },
     { href: "/transactions", label: "Transaction" },
     { href: "/settings", label: "Setting" },
   ]
 
   const merchantItems = [
-    { href: "/profile", label: "Profile" },
+    { href: "/profile", label: session?.user?.email || "Profile" },
     { href: "/settings", label: "Setting" },
   ]
 
