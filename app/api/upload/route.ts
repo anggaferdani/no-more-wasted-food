@@ -1,33 +1,55 @@
 import { NextRequest, NextResponse } from "next/server"
-import { writeFile, mkdir } from "fs/promises"
-import { join } from "path"
-import { existsSync } from "fs"
+import { createClient } from "@supabase/supabase-js"
+
+export const runtime = "nodejs"
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
 function generateFilename(ext: string): string {
   const chars = "abcdefghijklmnopqrstuvwxyz0123456789"
-  const name = Array.from({ length: 16 }, () => chars[Math.floor(Math.random() * chars.length)]).join("")
+  const name = Array.from({ length: 16 }, () =>
+    chars[Math.floor(Math.random() * chars.length)]
+  ).join("")
   return `${name}.${ext}`
 }
 
 export async function POST(req: NextRequest) {
-  const formData = await req.formData()
-  const files = formData.getAll("files") as File[]
+  try {
+    const formData = await req.formData()
+    const files = formData.getAll("files") as File[]
 
-  if (!files.length) return NextResponse.json({ error: "No files" }, { status: 400 })
+    if (!files.length) {
+      return NextResponse.json({ error: "No files" }, { status: 400 })
+    }
 
-  const uploadDir = join(process.cwd(), "public", "uploads", "products")
-  if (!existsSync(uploadDir)) await mkdir(uploadDir, { recursive: true })
+    const urls: string[] = []
 
-  const urls: string[] = []
+    for (const file of files) {
+      const ext = file.name.split(".").pop() ?? "jpg"
+      const filename = generateFilename(ext)
 
-  for (const file of files) {
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-    const ext = file.name.split(".").pop() ?? "jpg"
-    const filename = generateFilename(ext)
-    await writeFile(join(uploadDir, filename), buffer)
-    urls.push(`/uploads/products/${filename}`)
+      const { error } = await supabase.storage
+        .from("products")
+        .upload(filename, file)
+
+      if (error) {
+        console.error(error)
+        return NextResponse.json({ error: error.message }, { status: 500 })
+      }
+
+      const { data } = supabase.storage
+        .from("products")
+        .getPublicUrl(filename)
+
+      urls.push(data.publicUrl)
+    }
+
+    return NextResponse.json({ urls })
+  } catch (err) {
+    console.error("UPLOAD ERROR:", err)
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 })
   }
-
-  return NextResponse.json({ urls })
 }
