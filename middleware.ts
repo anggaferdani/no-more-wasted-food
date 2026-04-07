@@ -12,20 +12,20 @@ export async function middleware(req: NextRequest) {
 
   const role = token?.role as string | undefined
 
-  if (pathname.startsWith("/admin")) {
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", req.url))
-    }
+  // if (pathname.startsWith("/admin")) {
+  //   if (!token) {
+  //     return NextResponse.redirect(new URL("/login", req.url))
+  //   }
 
-    if (token.role !== "admin") {
-      return NextResponse.redirect(new URL("/", req.url))
-    }
-  }
+  //   if (token.role !== "admin") {
+  //     return NextResponse.redirect(new URL("/", req.url))
+  //   }
+  // }
 
-  if ((pathname === "/login" || pathname === "/register") && token) {
-    if (role === "admin") return NextResponse.redirect(new URL("/admin/dashboard", req.url))
-    return NextResponse.redirect(new URL("/", req.url))
-  }
+  // if ((pathname === "/login" || pathname === "/register") && token) {
+  //   if (role === "admin") return NextResponse.redirect(new URL("/admin/dashboard", req.url))
+  //   return NextResponse.redirect(new URL("/", req.url))
+  // }
 
   return NextResponse.next()
 }
